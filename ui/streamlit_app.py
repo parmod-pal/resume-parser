@@ -1,7 +1,11 @@
 import streamlit as st
 import requests
+import os
 
-API_BASE_URL = "http://localhost:8000/api"
+if "API_URL" in st.secrets:
+    API_BASE_URL = st.secrets["API_URL"]
+else:
+    API_BASE_URL = os.getenv("API_URL", "http://localhost:8000/api")
 
 st.set_page_config(page_title="AI Resume Parser", layout="wide")
 st.title("📄 AI Resume Parser")
