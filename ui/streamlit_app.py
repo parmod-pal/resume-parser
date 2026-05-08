@@ -1,15 +1,26 @@
 import streamlit as st
 import requests
 import os
-
-if "API_URL" in st.secrets:
-    API_BASE_URL = st.secrets["API_URL"]
-else:
-    API_BASE_URL = os.getenv("API_URL", "http://localhost:8000/api")
+from pathlib import Path
 
 st.set_page_config(page_title="AI Resume Parser", layout="wide")
-st.title("📄 AI Resume Parser")
 
+def get_api_url():
+    local_secrets = Path(".streamlit/secrets.toml")
+    
+    if local_secrets.exists() or "STREAMLIT_RUNTIME_ENV" in os.environ:
+        try:
+            return st.secrets.get("API_URL", "http://localhost:8000/api")
+        except:
+            return "http://localhost:8000/api"
+    
+    # Default to localhost for your Mac
+    return "http://localhost:8000/api"
+
+API_BASE_URL = get_api_url()
+
+
+st.title("📄 AI Resume Parser")
 st.sidebar.header("Upload Document")
 uploaded_file = st.sidebar.file_uploader("Choose a PDF or DOCX file", type=["pdf", "docx","doc"])
 
