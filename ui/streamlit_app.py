@@ -25,7 +25,7 @@ st.sidebar.header("Upload Document")
 uploaded_file = st.sidebar.file_uploader("Choose a PDF or DOCX file", type=["pdf", "docx","doc"])
 
 if uploaded_file and st.sidebar.button("Extract Data", type="primary"):
-    with st.spinner("Parsing document via Ollama..."):
+    with st.spinner("Parsing Resume..."):
         try:
             files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
             response = requests.post(f"{API_BASE_URL}/upload", files=files)
